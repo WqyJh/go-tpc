@@ -18,10 +18,11 @@ import (
 	"github.com/pingcap/go-tpc/pkg/util"
 	"github.com/spf13/cobra"
 	_ "go.uber.org/automaxprocs"
+
 	// mysql package
 	"github.com/go-sql-driver/mysql"
 	// pg
-	"github.com/lib/pq"
+	pgx "github.com/jackc/pgx/v5/stdlib"
 )
 
 var (
@@ -110,7 +111,7 @@ func newDB(targets []string, driver string, user string, password string, dbName
 				dsn = dsn + "?" + connParams
 			}
 			names[i] = dsn
-			drv = &pq.Driver{}
+			drv = pgx.GetDefaultDriver()
 		default:
 			panic(fmt.Errorf("unknown driver: %q", driver))
 		}
